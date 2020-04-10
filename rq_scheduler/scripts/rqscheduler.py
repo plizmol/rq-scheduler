@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--pid', help='A filename to use for the PID file.', metavar='FILE')
     parser.add_argument('-j', '--job-class', help='Custom RQ Job class')
     parser.add_argument('-q', '--queue-class', help='Custom RQ Queue class')
+    parser.add_argument('--queue', help='Queue which will receive scheduled jobs')
 
     args = parser.parse_args()
 
@@ -54,7 +55,8 @@ def main():
         level = 'INFO'
     setup_loghandlers(level)
 
-    scheduler = Scheduler(connection=connection,
+    scheduler = Scheduler(queue_name=args.queue,
+                          connection=connection,
                           interval=args.interval,
                           job_class=args.job_class,
                           queue_class=args.queue_class)
